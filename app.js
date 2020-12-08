@@ -2,12 +2,12 @@ let r;
 function setup() {
     createCanvas(640, 480,WEBGL);
     createEasyCam();
-    r = new Pyramid(-25, -25, 0, 50,50, 50, 50)
+    r = new Sphere(0, 0, 0, 50,30, 30)
 
 }
 
 function draw() {
-    background(52);
+    background(255);
     r.setColor("#ffff00")
     //r.rotationX(Math.PI/300)
 
