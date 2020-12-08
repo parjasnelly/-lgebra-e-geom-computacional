@@ -193,10 +193,10 @@ class Sphere{
 
     draw(){
 
-        strokeWeight(1);
+        strokeWeight(0.1);
         //stroke(this.color);
         fill(this.color);
-        beginShape(TRIANGLE);
+        beginShape(TRIANGLES);
         let k1,k2
         for(let i = 0; i < this.st; ++i)
         {
