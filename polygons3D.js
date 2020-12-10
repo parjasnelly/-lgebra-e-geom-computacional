@@ -41,8 +41,6 @@ class Plane{
 
     draw(){
 
-        strokeWeight(0);
-        stroke(this.color);
         fill(this.color);
         beginShape(TRIANGLES);
 
@@ -114,8 +112,6 @@ class Parallelogram{
 
     draw(){
 
-        strokeWeight(0);
-        stroke(this.color);
         fill(this.color);
         beginShape(TRIANGLES);
 
@@ -132,32 +128,31 @@ class Parallelogram{
 
 class Sphere{
     constructor(x, y, z, r, st, se) {
-        this.sectorStep = 2 * Math.PI / st;
-        this.stackStep = Math.PI / se;
+        let sectorStep = 2 * Math.PI / st;
+        let stackStep = Math.PI / se;
         this.points = [];
         this.st = st;
         this.se = se;
+        this.center = new Vector(3,[x, y, z])
         this.t = new Transformations();
         // acha todos os pontos como se o ponto central esteja na origem
         for(let i = 0; i <= st; i++){
-            this.stackA = Math.PI / 2 - i * this.stackStep;
+            let stackA = Math.PI / 2 - i * stackStep;
 
-            for(let j = 0; j <= se; ++j)
-            {
-                this.sectorA = j * this.sectorStep;
-                this.points.push(new Vector(3,[(r * Math.cos(this.stackA))*Math.cos(this.sectorA),
-                    (r * Math.cos(this.stackA))*Math.sin(this.sectorA),
-                    r * Math.sin(this.stackA)]));
+            for(let j = 0; j <= se; ++j) {
+
+                let sectorA = j * sectorStep;
+                this.points.push(new Vector(3,[(r * Math.cos(stackA))*Math.cos(sectorA), (r * Math.cos(stackA))*Math.sin(sectorA), r * Math.sin(stackA)]));
 
             }
         }
-        // rotaciona a esfera
+        // rotaciona a esfera em 90 graus para que ela apareça "em pé"
         for(let i = 0; i<this.points.length;i++){
             this.points[i] = this.t.rotation3Dx(this.points[i], Math.PI/2);
         }
         // translada todos os pontos para a posição x,y e z dadas
         for(let i = 0; i<this.points.length;i++){
-            this.points[i] = this.t.translate3D(this.points[i], x, y, z);
+            this.points[i] = this.t.translate3D(this.points[i], this.center.get(1), this.center.get(2), this.center.get(3));
         }
         this.color = "#000000";
 
@@ -172,7 +167,12 @@ class Sphere{
             this.points[i] = this.t.translate3D(this.points[i], dx, dy, dz);
         }
     }
-
+    // rotaciona a esfera em seu proprio eixo
+    rotation(angle){
+        this.translate(-this.center.get(1), -this.center.get(2), -this.center.get(3));
+        this.rotationY(angle);
+        this.translate(this.center.get(1), this.center.get(2), this.center.get(3));
+    }
     rotationX(angle) {
         for (let i = 0; i < this.points.length; i++) {
             this.points[i] = this.t.rotation3Dx(this.points[i], angle);
@@ -193,8 +193,8 @@ class Sphere{
 
     draw(){
 
-        strokeWeight(0.1);
-        //stroke(this.color);
+        strokeWeight(0);
+        stroke(this.color);
         fill(this.color);
         beginShape(TRIANGLES);
         let k1,k2
@@ -271,8 +271,6 @@ class Pyramid{
 
     draw(){
 
-        strokeWeight(0);
-        stroke(this.color);
         fill(this.color);
         beginShape(TRIANGLES);
         // base
